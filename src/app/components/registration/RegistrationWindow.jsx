@@ -1,13 +1,11 @@
 "use client";
 import { Box, Typography, Button } from "@mui/material";
 import MainIconForLogin from "@/icons/MainIconForLogin";
-import LoginForm from "./LoginForm";
+import RegistrationForm from "./RegistrationForm";
 
-const LoginWindow = () => {
-    const handleLoginSubmit = (formData) => {
-        
+const RegistrationWindow = () => {
+    const handleRegistrationSubmit = (formData) => {
         console.log('Form submitted:', formData);
-
       };
 
     return (
@@ -15,12 +13,12 @@ const LoginWindow = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '100vh',
+            height: '100vh' ,
             backgroundColor: 'background.main',
         }}>
             <Box sx={{
                 backgroundColor: 'background.light',
-                width: { xs: '90%', sm: '70%', md: '50%' },
+                width: { xs: 'auto', sm: '70%', md: '50%' },
                 minWidth: 350,
                 maxWidth: 450,
                 height: { xs: 'auto', md: 'auto' },
@@ -40,7 +38,7 @@ const LoginWindow = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     gap: 1,
-                    mt: 5
+                    mt: 5,
                 }}>
                     <Typography variant="h4" component="h1" fontWeight="normal">
                         Welcome to
@@ -59,10 +57,11 @@ const LoginWindow = () => {
                     <MainIconForLogin />
                 </Box>
 
-                <LoginForm onSubmit={handleLoginSubmit} />
+                <RegistrationForm onSubmit={handleRegistrationSubmit} />
+
             </Box>
         </Box>
     );
 }
 
-export default LoginWindow;
+export default RegistrationWindow;
