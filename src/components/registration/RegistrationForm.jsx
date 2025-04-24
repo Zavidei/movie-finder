@@ -16,7 +16,7 @@ const RegistrationForm = ({ onSubmit }) => {
     const [repeatPasswordHelperText, setRepeatPasswordHelperText] = useState('');
 
     const validateEmail = (email) => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         return re.test(email);
     };
 
@@ -26,6 +26,18 @@ const RegistrationForm = ({ onSubmit }) => {
         if (!password) {
             setPasswordError(true);
             setPasswordHelperText('Password is required');
+            isValid = false;
+        } else if (password.length < 5) {
+            setPasswordError(true);
+            setPasswordHelperText('Password must be at least 5 characters');
+            isValid = false;
+        } else if (password.length > 15) {
+            setPasswordError(true);
+            setPasswordHelperText('Password must be no more than 15 characters');
+            isValid = false;
+        } else if (/[а-яА-ЯЁё]/.test(password)) {
+            setPasswordError(true);
+            setPasswordHelperText('Password must not contain Cyrillic letters');
             isValid = false;
         } else {
             setPasswordError(false);
@@ -130,6 +142,7 @@ const RegistrationForm = ({ onSubmit }) => {
             >
                 Register
             </Button>
+            
         </Box>
     );
 };

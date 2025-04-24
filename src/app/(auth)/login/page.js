@@ -1,11 +1,11 @@
-import LoginWondow from "../components/login/LoginWindow";
+import LoginWindow from "@/components/login/LoginWindow";
 import { Box } from "@mui/material";
 
 const LoginPage = () => {
     return (
         <>
             <Box>
-                <LoginWondow />
+                <LoginWindow />
             </Box>
         </>
     );

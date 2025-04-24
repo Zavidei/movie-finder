@@ -1,26 +1,52 @@
 "use client";
 import { Box, Typography, Button } from "@mui/material";
 import MainIconForLogin from "@/icons/MainIconForLogin";
-import LoginForm from "./LoginForm";
+import RegistrationForm from "./RegistrationForm";
+import { useRouter } from 'next/navigation';
+import { addUser, getUserByEmail  } from "@/app/data/authData";
+import { signToken } from "@/app/lib/auth";
 
-const LoginWindow = () => {
-    const handleLoginSubmit = (formData) => {
-        
-        console.log('Form submitted:', formData);
+const RegistrationWindow = () => {
+    const router = useRouter();
 
-      };
+    const loginLink = () => {
+        router.push('/login');
+    };
+
+    const handleRegistrationSubmit = async (formData) => {
+        console.log("Отправляемые данные:", formData); 
+        try {
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),  
+            });
+    
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
+    
+            localStorage.setItem('authToken', data.token);
+            router.push('/dashboard');
+        } catch (error) {
+            alert(error.message);
+        }
+    };
+    
+      
+      
 
     return (
         <Box sx={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '100vh',
+            flexDirection: 'column',
+            height: '100vh' ,
             backgroundColor: 'background.main',
         }}>
             <Box sx={{
                 backgroundColor: 'background.light',
-                width: { xs: '90%', sm: '70%', md: '50%' },
+                width: { xs: 'auto', sm: '70%', md: '50%' },
                 minWidth: 350,
                 maxWidth: 450,
                 height: { xs: 'auto', md: 'auto' },
@@ -40,7 +66,7 @@ const LoginWindow = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     gap: 1,
-                    mt: 5
+                    mt: 5,
                 }}>
                     <Typography variant="h4" component="h1" fontWeight="normal">
                         Welcome to
@@ -59,10 +85,17 @@ const LoginWindow = () => {
                     <MainIconForLogin />
                 </Box>
 
-                <LoginForm onSubmit={handleLoginSubmit} />
+                <RegistrationForm onSubmit={handleRegistrationSubmit} />
+
             </Box>
+            <Typography onClick={loginLink} sx={{
+                mt: 2,
+                cursor: 'pointer',
+            }}>
+                Login
+            </Typography>
         </Box>
     );
 }
 
-export default LoginWindow;
+export default RegistrationWindow;

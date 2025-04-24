@@ -1,12 +1,20 @@
 "use client";
 import { AppBar, Box, Toolbar, TextField, Button, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import MainIcon from '../../../icons/MainIcon';
-import LogoutIcon from '../../../icons/LogoutIcon';
+import MainIcon from '../../icons/MainIcon';
+import LogoutIcon from '../../icons/LogoutIcon';
 import { useRouter } from 'next/navigation';
+import UserProfile from './UserProfile';
 
-export default function NavBar() {
+
+export default function NavBar({ onSearch, query, setQuery }) {
     const router = useRouter();
+
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userEmail');
+        router.push('/login');
+    };
 
     return (
         <Box>
@@ -25,7 +33,7 @@ export default function NavBar() {
                         alignItems: 'center',
                         py: 1
                     }}>
-                    <Box onClick={() => router.push('/')} sx={{ cursor: 'pointer', lineHeight: 0 }}>
+                    <Box onClick={() => router.push('/dashboard')} sx={{ cursor: 'pointer', lineHeight: 0 }}>
                         <MainIcon />
                     </Box>
 
@@ -34,6 +42,9 @@ export default function NavBar() {
                             variant="outlined"
                             placeholder="Enter name film ..."
                             size="small"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && onSearch()}
                             sx={{
                                 width: 450,
                                 '& .MuiOutlinedInput-root': {
@@ -66,6 +77,7 @@ export default function NavBar() {
                                     color: 'text.active',
                                 }
                             }}
+                            onClick={onSearch}
                         >
                             Search
                         </Button>
@@ -85,8 +97,8 @@ export default function NavBar() {
                     >
                         Favorite Films
                     </Button>
-
-                    <Box onClick={() => router.push('/login')} sx={{ cursor: 'pointer', lineHeight: 0 }}>
+                    <UserProfile />
+                    <Box onClick={handleLogout} sx={{ cursor: 'pointer', lineHeight: 0 }}>
                         <LogoutIcon />
                     </Box>
                 </Toolbar>
